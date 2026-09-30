@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Sheet — an OpenCV darkroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead__mark">
+    <svg viewBox="0 0 40 40" class="aperture-icon" aria-hidden="true">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <g stroke="currentColor" stroke-width="1.4" fill="none">
+        <path d="M20 4 L26 16 L14 16 Z"/>
+        <path d="M35 14 L28 25 L22 15 Z"/>
+        <path d="M32 32 L19 30 L26 20 Z"/>
+        <path d="M8 32 L11 19 L21 25 Z"/>
+        <path d="M5 14 L18 15 L12 25 Z"/>
+      </g>
+    </svg>
+  </div>
+  <div class="masthead__text">
+    <h1>Contact&nbsp;Sheet</h1>
+    <p>a small darkroom for OpenCV, developed in Flask</p>
+  </div>
+</header>
+
+<main class="lab">
+
+  <section class="light-table" id="lightTable">
+    <div class="light-table__grid"></div>
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" accept="image/*" hidden>
+      <img id="previewImg" alt="" hidden>
+      <div class="dropzone__prompt" id="dropzonePrompt">
+        <span class="dropzone__icon">＋</span>
+        <p>Drop a frame here, or click to load one</p>
+        <p class="dropzone__hint">JPG · PNG · BMP — processed locally in this app</p>
+      </div>
+    </div>
+    <div class="light-table__caption">
+      <span id="fileNameLabel">no frame loaded</span>
+      <button type="button" id="resetBtn" class="ghost-btn" hidden>clear</button>
+    </div>
+  </section>
+
+  <section class="filmstrip" aria-label="choose an operation">
+    <p class="filmstrip__label">select an exposure</p>
+    <div class="filmstrip__frames" id="operationFrames">
+
+      <button type="button" class="frame" data-op="grayscale" data-fstop="f/1">
+        <span class="frame__sprockets"></span>
+        <span class="frame__glyph">◐</span>
+        <span class="frame__name">Grayscale</span>
+        <span class="frame__stop">f/1</span>
+      </button>
+
+      <button type="button" class="frame" data-op="crop" data-fstop="f/2">
+        <span class="frame__sprockets"></span>
+        <span class="frame__glyph">⤢</span>
+        <span class="frame__name">Crop</span>
+        <span class="frame__stop">f/2</span>
+      </button>
+
+      <button type="button" class="frame" data-op="rotate" data-fstop="f/2.8">
+        <span class="frame__sprockets"></span>
+        <span class="frame__glyph">↻</span>
+        <span class="frame__name">Rotate</span>
+        <span class="frame__stop">f/2.8</span>
+      </button>
+
+      <button type="button" class="frame" data-op="flip" data-fstop="f/4">
+        <span class="frame__sprockets"></span>
+        <span class="frame__glyph">⇋</span>
+        <span class="frame__name">Flip</span>
+        <span class="frame__stop">f/4</span>
+      </button>
+
+      <button type="button" class="frame" data-op="shape" data-fstop="f/5.6">
+        <span class="frame__sprockets"></span>
+        <span class="frame__glyph">▱</span>
+        <span class="frame__name">Draw shape</span>
+        <span class="frame__stop">f/5.6</span>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="control-strip" id="controlStrip" hidden>
+    <p class="control-strip__label">exposure settings — <span id="controlOpName"></span></p>
+
+    <form id="controlForm" class="control-form">
+
+      <div class="field-group" data-fields="crop">
+        <label>x <input type="number" name="x" value="0"></label>
+        <label>y <input type="number" name="y" value="0"></label>
+        <label>width <input type="number" name="width" value="100"></label>
+        <label>height <input type="number" name="height" value="100"></label>
+      </div>
+
+      <div class="field-group" data-fields="rotate">
+        <label>angle (°) <input type="number" name="angle" value="45" step="1"></label>
+      </div>
+
+      <div class="field-group" data-fields="flip">
+        <label class="radio"><input type="radio" name="flip_code" value="0"> vertical</label>
+        <label class="radio"><input type="radio" name="flip_code" value="1" checked> horizontal</label>
+        <label class="radio"><input type="radio" name="flip_code" value="-1"> both</label>
+      </div>
+
+      <div class="field-group" data-fields="shape">
+        <label>shape
+          <select name="shape" id="shapeSelect">
+            <option value="rectangle">rectangle</option>
+            <option value="circle">circle</option>
+            <option value="line">line</option>
+          </select>
+        </label>
+
+        <div class="shape-fields" data-shape="rectangle">
+          <label>x1 <input type="number" name="x1" value="20"></label>
+          <label>y1 <input type="number" name="y1" value="20"></label>
+          <label>x2 <input type="number" name="x2" value="150"></label>
+          <label>y2 <input type="number" name="y2" value="150"></label>
+        </div>
+
+        <div class="shape-fields" data-shape="circle" hidden>
+          <label>center x <input type="number" name="center_x" value="100"></label>
+          <label>center y <input type="number" name="center_y" value="100"></label>
+          <label>radius <input type="number" name="radius" value="50"></label>
+        </div>
+
+        <div class="shape-fields" data-shape="line" hidden>
+          <label>x1 <input type="number" name="x1" value="20"></label>
+          <label>y1 <input type="number" name="y1" value="20"></label>
+          <label>x2 <input type="number" name="x2" value="150"></label>
+          <label>y2 <input type="number" name="y2" value="150"></label>
+        </div>
+
+        <label class="color-field">color (BGR)
+          <input type="text" name="color" value="255 0 0" placeholder="B G R">
+        </label>
+        <label>thickness <input type="number" name="thickness" value="2"></label>
+      </div>
+
+      <button type="submit" class="develop-btn" id="developBtn">Develop</button>
+    </form>
+  </section>
+
+  <section class="result" id="resultSection" hidden>
+    <p class="result__label">developed print</p>
+    <div class="result__frame">
+      <img id="resultImg" alt="processed result">
+    </div>
+    <a id="downloadBtn" class="download-btn" download>Save print</a>
+  </section>
+
+  <p class="status" id="statusMsg" role="status" aria-live="polite"></p>
+
+</main>
+
+<footer class="site-footer">
+  <p>built with Flask + OpenCV — a minimal example for learning image processing basics</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
