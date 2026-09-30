@@ -1,4 +1,4 @@
-# Contact Sheet — an OpenCV darkroom
+# Contact Sheet - an OpenCV darkroom
 
 A small Flask web app that puts a browser front end on five basic OpenCV
 operations: grayscale conversion, cropping, rotation, flipping, and
@@ -31,9 +31,3 @@ Open `http://127.0.0.1:5000` in a browser.
 
 No image is ever saved to disk on the server; everything is processed
 in memory and returned straight to the browser.
-
-## Deploying
-
-Any host that runs a Python/Flask app works (Render, Railway, PythonAnywhere,
-a small VPS). Set the start command to `gunicorn app:app` in production
-instead of `python app.py`, and add `gunicorn` to `requirements.txt`.
