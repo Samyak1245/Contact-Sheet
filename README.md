@@ -31,5 +31,3 @@ Open `http://127.0.0.1:5000` in a browser.
   parameter fields, and submits everything to `/process` with `fetch`.
 - `static/css/style.css` — the visual theme.
 
-No image is ever saved to disk on the server; everything is processed
-in memory and returned straight to the browser.
