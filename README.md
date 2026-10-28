@@ -1,6 +1,6 @@
 # Contact Sheet - an OpenCV darkroom
 
-A small Flask web app that puts a browser front end on five basic OpenCV
+A Flask web app that puts a browser front end on five basic OpenCV
 operations: grayscale conversion, cropping, rotation, flipping, and
 drawing shapes. Built as a web version of a menu-driven OpenCV script.
 
