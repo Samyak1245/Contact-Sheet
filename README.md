@@ -1,10 +1,10 @@
 # Contact Sheet
 
-A small Flask web app for applying OpenCV operations to images in your
-browser. Choose grayscale conversion, cropping, rotation, flipping, or
-drawing a rectangle, circle, or line, then preview and download the result.
+A small Flask web app that puts a browser front end on five basic OpenCV
+operations: grayscale conversion, cropping, rotation, flipping, and
+drawing shapes. Built as a web version of a menu-driven OpenCV script.
 
-## Run locally
+## Run it locally
 
 ```bash
 git clone https://github.com/Samyak1245/Open-CV.git
