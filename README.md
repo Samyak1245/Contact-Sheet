@@ -8,7 +8,7 @@ drawing a rectangle, circle, or line, then preview and download the result.
 
 ```bash
 git clone https://github.com/Samyak1245/Open-CV.git
-cd Open-CV/Contact-Sheet
+cd Open-CV
 python -m venv venv
 ```
 
@@ -34,9 +34,22 @@ image, choose an operation, set its parameters, and select **Develop**.
 The processed JPEG can be previewed and downloaded. Uploads are limited to
 10 MiB.
 
+## Operations
+
+- **Grayscale** converts the image to grayscale.
+- **Crop** takes a rectangle using its top-left `x` and `y` coordinates and
+  `width` and `height`, in pixels. The origin `(0, 0)` is the top-left of
+  the image; the crop is limited to the image boundaries.
+- **Rotate** rotates around the image center by the specified angle in
+  degrees. The output keeps the original image dimensions.
+- **Flip** mirrors the image vertically, horizontally, or both.
+- **Draw shape** adds a rectangle, circle, or line. Coordinates, radius,
+  and thickness are in pixels. The color is entered as three space-separated
+  BGR values from 0 to 255 (blue, green, red).
+
 ## Run with Docker
 
-From the `Contact-Sheet` directory, build and run the container:
+From the repository directory, build and run the container:
 
 ```bash
 docker build -t contact-sheet .
